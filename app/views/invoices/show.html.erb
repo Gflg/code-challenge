@@ -15,7 +15,7 @@
         <b><%= "Debtor: "%></b> <%= "#{@invoice.debtor}"%>
     </li>
     <li>
-        <b><%= "Total value: "%></b> <%= "#{@invoice.total_value}"%>
+        <b><%= "Total value: "%></b> <%= "$#{@invoice.total_value}"%>
     </li>
 
     <h4>Emails</h4>
@@ -29,6 +29,7 @@
 <div>
   <%= link_to "Edit this invoice", edit_invoice_path(@invoice) %> |
   <%= link_to "Back to invoices", invoices_path %>
+  <%= link_to "Download PDF", invoice_path(@invoice, format: "pdf") %>
 
   <%= button_to "Destroy this invoice", @invoice, method: :delete %>
 </div>
