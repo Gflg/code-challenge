@@ -1,0 +1,16 @@
+<!-- COMENTÁRIO:
+  Dentro da partial todo conteúdo deve estar dentro de uma div .nested-fields
+-->
+<div class="nested-fields">
+  <div class="field">
+    <%= f.label :address %>
+    <%= f.email_field :address %>
+  </div>
+
+  <!-- COMENTÁRIO:
+    link_to_remove_association é o helper que o cocoon nos fornece para deletar algum nested
+  -->
+  <%= link_to_remove_association "remove email", f %>
+
+  <br><br><br>
+</div>
