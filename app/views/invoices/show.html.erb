@@ -1,4 +1,5 @@
 <p style="color: green"><%= notice %></p>
+<h1>Invoice</h1>
 
 <ul>
     <li>
@@ -16,6 +17,13 @@
     <li>
         <b><%= "Total value: "%></b> <%= "#{@invoice.total_value}"%>
     </li>
+
+    <h4>Emails</h4>
+    <ul>
+        <% @invoice.emails.each do |email| %>
+            <li><%= email.address %></li>
+        <% end %>
+    </ul>
 </ul>
 
 <div>

@@ -8,11 +8,13 @@ class InvoicesController < ApplicationController
 
   # GET /invoices/1 or /invoices/1.json
   def show
+    @invoice = Invoice.find(params[:id])
   end
 
   # GET /invoices/new
   def new
     @invoice = Invoice.new
+    @emails = @invoice.emails.build
   end
 
   # GET /invoices/1/edit
@@ -22,6 +24,8 @@ class InvoicesController < ApplicationController
   # POST /invoices or /invoices.json
   def create
     @invoice = Invoice.new(invoice_params)
+    puts 'Tô aqui'
+    puts invoice_params
     respond_to do |format|
       if Invoice.find_by(id: invoice_params[:id]).nil?
         if @invoice.save
@@ -70,6 +74,16 @@ class InvoicesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def invoice_params
-      params.require(:invoice).permit(:id, :created_at, :company, :debtor, :total_value)
+      params.require(:invoice).permit(:id,
+        :created_at,
+        :company,
+        :debtor,
+        :total_value,
+        emails_attributes: [
+          :id,
+          :address,
+          :_destroy
+        ]
+      )
     end
 end

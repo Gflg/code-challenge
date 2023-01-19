@@ -36,6 +36,18 @@
     <%= form.text_field :total_value %>
   </div>
 
+  <h4>Emails</h4>
+  <div id="emails">
+    <%= form.fields_for :emails do |email| %>
+      <%= render "email_fields", f: email %>
+    <% end %>
+ 
+    <div class="links">
+      <%= link_to_add_association "Add Email", form, :emails %>
+      <br><br>
+    </div>
+  </div>
+
   <div>
     <%= form.submit %>
   </div>
