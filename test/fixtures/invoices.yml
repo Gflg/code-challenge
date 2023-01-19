@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company: MyText
+  debtor: MyText
+  total_value: 9.99
+
+two:
+  company: MyText
+  debtor: MyText
+  total_value: 9.99

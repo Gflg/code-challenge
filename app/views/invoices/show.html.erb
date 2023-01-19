@@ -1,0 +1,26 @@
+<p style="color: green"><%= notice %></p>
+
+<ul>
+    <li>
+        <b><%= "ID: "%></b> <%= "#{@invoice.id}"%>
+    </li>
+    <li>
+        <b><%= "Creation date: "%></b> <%= "#{@invoice.created_at}"%>
+    </li>
+    <li>
+        <b><%= "Company: "%></b> <%= "#{@invoice.company}"%>
+    </li>
+    <li>
+        <b><%= "Debtor: "%></b> <%= "#{@invoice.debtor}"%>
+    </li>
+    <li>
+        <b><%= "Total value: "%></b> <%= "#{@invoice.total_value}"%>
+    </li>
+</ul>
+
+<div>
+  <%= link_to "Edit this invoice", edit_invoice_path(@invoice) %> |
+  <%= link_to "Back to invoices", invoices_path %>
+
+  <%= button_to "Destroy this invoice", @invoice, method: :delete %>
+</div>

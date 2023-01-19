@@ -1,0 +1,13 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Invoices</h1>
+
+<div id="invoices">
+  <% @invoices.each do |invoice| %>
+    <li>
+        <%= link_to "Invoice ##{invoice.id}", invoice %>
+    </li>
+  <% end %>
+</div>
+
+<%= link_to "New invoice", new_invoice_path %>
