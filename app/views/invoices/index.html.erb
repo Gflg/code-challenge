@@ -2,12 +2,29 @@
 
 <h1>Invoices</h1>
 
-<div id="invoices">
+<%= form_tag invoices_path, :method => 'get' do %>
+  <p>
+    <%= text_field_tag :id, params[:id] %>
+    <%= submit_tag "Filter by id", :name => nil %>
+  </p>
+  <p>
+    <%= date_field_tag :start_date, params[:start_date] %>
+    <%= date_field_tag :end_date, params[:end_date] %>
+    <%= submit_tag "Filter by creation date", :name => nil %>
+  </p>
+<% end %>
+
+<table id="invoices">
+  <tr>
+    <th>Invoice ID</th>
+    <th>Creation date</th>
+  </tr>
   <% @invoices.each do |invoice| %>
-    <li>
-        <%= link_to "Invoice ##{invoice.id}", invoice %>
-    </li>
+    <tr>
+        <td><%= link_to "Invoice ##{invoice.id}", invoice %></td>
+        <td><%= invoice.created_at.strftime('%d-%m-%Y') %></td>
+    </tr>
   <% end %>
-</div>
+</table>
 
 <%= link_to "New invoice", new_invoice_path %>

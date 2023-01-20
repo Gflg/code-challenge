@@ -3,12 +3,22 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    @invoices = Invoice.all
+    if is_param_set(id)
+      @invoices = Invoice.where(id: id)
+    elsif is_param_set(start_date) && is_param_set(end_date)
+      @invoices = Invoice.where("created_at >= (?) AND created_at <= (?)", start_date, end_date)
+    elsif is_param_set(start_date)
+      @invoices = Invoice.where("created_at >= (?)", start_date)
+    elsif is_param_set(end_date)
+      @invoices = Invoice.where("created_at <= (?)", end_date)
+    else
+      @invoices = Invoice.all
+    end
   end
 
   # GET /invoices/1 or /invoices/1.json
   def show
-    @invoice = Invoice.find(params[:id])
+    @invoice = Invoice.find(id)
     respond_to do |format|
       format.html
       format.pdf do
@@ -21,7 +31,7 @@ class InvoicesController < ApplicationController
   end
 
   def edit_emails
-    @invoice = Invoice.find(params[:id])
+    @invoice = Invoice.find(id)
   end
 
   def save_emails
@@ -51,7 +61,7 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     respond_to do |format|
-      if Invoice.find_by(id: invoice_params[:id]).nil?
+      if Invoice.find_by(id: invoice_id).nil?
         if @invoice.save
           InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
           format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
@@ -73,7 +83,7 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       if @invoice.update(invoice_params)
         InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
-        format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully updated." }
+        format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
         format.json { render :show, status: :ok, location: @invoice }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -95,7 +105,23 @@ class InvoicesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
-      @invoice = Invoice.find(params[:id])
+      @invoice = Invoice.find(id)
+    end
+
+    def id
+      params[:id]
+    end
+
+    def start_date
+      params[:start_date]
+    end
+
+    def end_date
+      params[:end_date]
+    end
+
+    def is_param_set(param)
+      !param.nil? && param != ""
     end
 
     def create_pdf
@@ -126,11 +152,13 @@ class InvoicesController < ApplicationController
         :company,
         :debtor,
         :total_value,
+        :start_date,
+        :end_date,
         emails_attributes: [
           :id,
           :address,
           :_destroy
-        ]
+        ],
       )
     end
 end

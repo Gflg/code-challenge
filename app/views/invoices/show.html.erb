@@ -6,7 +6,7 @@
         <b><%= "ID: "%></b> <%= "#{@invoice.id}"%>
     </li>
     <li>
-        <b><%= "Creation date: "%></b> <%= "#{@invoice.created_at}"%>
+        <b><%= "Creation date: "%></b> <%= "#{@invoice.created_at.strftime('%d-%m-%Y')}"%>
     </li>
     <li>
         <b><%= "Company: "%></b> <%= "#{@invoice.company}"%>
