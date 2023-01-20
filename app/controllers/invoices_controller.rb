@@ -12,25 +12,27 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-        pdf = Prawn::Document.new
-        pdf.text "ID: #{@invoice.id}"
-        pdf.move_down 10
-        pdf.text "Creation date: #{@invoice.created_at.strftime('%d-%m-%Y')}"
-        pdf.move_down 10
-        pdf.text "Company: #{@invoice.company}"
-        pdf.move_down 10
-        pdf.text "Debtor: #{@invoice.debtor}"
-        pdf.move_down 10
-        pdf.text "Total value: $#{@invoice.total_value}"
-        pdf.move_down 10
-        pdf.text "Emails"
-        @invoice.emails.each do |email|
-          pdf.move_down 10
-          pdf.text "#{Prawn::Text::NBSP * 5}• #{email.address}"
-        end
+        pdf = create_pdf
         send_data pdf.render, filename: "invoice_#{@invoice.id}.pdf",
                               type: "application/pdf",
                               disposition: "inline"
+      end
+    end
+  end
+
+  def edit_emails
+    @invoice = Invoice.find(params[:id])
+  end
+
+  def save_emails
+    respond_to do |format|
+      if @invoice.update(invoice_params)
+        InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
+        format.html { redirect_to invoice_url(@invoice), notice: "Invoice emails were successfully updated." }
+        format.json { render :show, status: :ok, location: @invoice }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -48,12 +50,11 @@ class InvoicesController < ApplicationController
   # POST /invoices or /invoices.json
   def create
     @invoice = Invoice.new(invoice_params)
-    puts 'Tô aqui'
-    puts invoice_params
     respond_to do |format|
       if Invoice.find_by(id: invoice_params[:id]).nil?
         if @invoice.save
-          format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created." }
+          InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
+          format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
           format.json { render :show, status: :created, location: @invoice }
         else
           format.html { render :new, status: :unprocessable_entity }
@@ -71,6 +72,7 @@ class InvoicesController < ApplicationController
   def update
     respond_to do |format|
       if @invoice.update(invoice_params)
+        InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
         format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully updated." }
         format.json { render :show, status: :ok, location: @invoice }
       else
@@ -94,6 +96,27 @@ class InvoicesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_invoice
       @invoice = Invoice.find(params[:id])
+    end
+
+    def create_pdf
+      pdf = Prawn::Document.new
+      pdf.text "ID: #{@invoice.id}"
+      pdf.move_down 10
+      pdf.text "Creation date: #{@invoice.created_at.strftime('%d-%m-%Y')}"
+      pdf.move_down 10
+      pdf.text "Company: #{@invoice.company}"
+      pdf.move_down 10
+      pdf.text "Debtor: #{@invoice.debtor}"
+      pdf.move_down 10
+      pdf.text "Total value: $#{@invoice.total_value}"
+      pdf.move_down 10
+      pdf.text "Emails"
+      @invoice.emails.each do |email|
+        pdf.move_down 10
+        pdf.text "#{Prawn::Text::NBSP * 5}• #{email.address}"
+      end
+  
+      pdf
     end
 
     # Only allow a list of trusted parameters through.
