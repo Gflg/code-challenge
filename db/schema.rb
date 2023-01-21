@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_19_174235) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_21_032517) do
   create_table "emails", force: :cascade do |t|
     t.string "address"
     t.integer "invoice_id", null: false
@@ -23,6 +23,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_19_174235) do
     t.text "company"
     t.text "debtor"
     t.decimal "total_value", precision: 8, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "email"
+    t.text "confirmed_token"
+    t.text "token_to_be_confirmed"
+    t.boolean "is_active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
