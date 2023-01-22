@@ -2,7 +2,8 @@ class SessionsController < ApplicationController
   before_action :redirect_if_authenticated, only: [:create, :new]
 
   def create
-    @user = User.find_by(confirmed_token: params[:user][:token])
+    @user_handler = UserHandler.new(confirmed_token: params[:user][:token])
+    @user = @user_handler.find_user
     if @user
         login @user
         redirect_to invoices_path, notice: "Signed in."
