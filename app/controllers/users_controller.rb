@@ -26,7 +26,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         UserMailer.with(user: @user).activate_user_token.deliver_later
-        format.html { redirect_to user_url(@user), notice: "Mail was sent to confirm access." }
+        format.html { redirect_to root_url, notice: "Mail was sent to confirm access." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,6 +40,7 @@ class UsersController < ApplicationController
     @user.confirm_token
     respond_to do |format|
       if @user.save
+        login @user
         format.html { redirect_to invoices_url, notice: "User was successfully activated." }
         format.json { render :show, status: :ok, location: @user }
       else
