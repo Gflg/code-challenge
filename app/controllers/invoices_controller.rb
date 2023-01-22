@@ -61,7 +61,7 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(invoice_params)
     respond_to do |format|
-      if Invoice.find_by(id: invoice_id).nil?
+      if Invoice.find_by(id: @invoice.id).nil?
         if @invoice.save
           InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
           format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
