@@ -11,16 +11,16 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get new" do
-    get new_user_url
+    get login_url
     assert_response :success
   end
 
   test "should create user" do
     assert_difference("User.count") do
-      post users_url, params: { user: { email: @user.email, is_active: @user.is_active, token: @user.token } }
+      post users_url, params: { user: { email: "test@test.com", is_active: true, confirmed_token: 'token' } }
     end
 
-    assert_redirected_to user_url(User.last)
+    assert_redirected_to root_url
   end
 
   test "should show user" do
@@ -28,21 +28,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should get edit" do
-    get edit_user_url(@user)
-    assert_response :success
-  end
-
-  test "should update user" do
-    patch user_url(@user), params: { user: { email: @user.email, is_active: @user.is_active, token: @user.token } }
-    assert_redirected_to user_url(@user)
-  end
-
-  test "should destroy user" do
-    assert_difference("User.count", -1) do
-      delete user_url(@user)
-    end
-
-    assert_redirected_to users_url
+  test "should activate token" do
+    get activate_user_token_url(@user)
+    assert_redirected_to invoices_url
   end
 end
