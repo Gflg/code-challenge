@@ -1,8 +1,8 @@
 # Preview all emails at http://localhost:3000/rails/mailers/invoice_mailer
 class InvoiceMailerPreview < ActionMailer::Preview
-    def welcome_email
+    def invoice_created
         invoice = Invoice.find_by(id: 1)
 
-        InvoiceMailer.with(invoice: invoice).welcome_email
+        InvoiceMailer.with(invoice: invoice).invoice_created
     end
 end
