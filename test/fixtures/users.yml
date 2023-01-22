@@ -7,5 +7,5 @@ one:
 
 two:
   email: MyString
-  confirmed_token: MyText
+  confirmed_token: MyText2
   is_active: true
