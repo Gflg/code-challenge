@@ -1,8 +1,9 @@
-class InvoiceGetter
-    def initialize(filters={})
-        @invoice_id = filters[:id]
-        @start_date = filters[:start_date]
-        @end_date = filters[:end_date]
+class InvoiceHandler
+    def initialize(params={})
+        @invoice_id = params[:id]
+        @start_date = params[:start_date]
+        @end_date = params[:end_date]
+        @params = params
     end
 
     def find_invoice_by_id
@@ -23,6 +24,10 @@ class InvoiceGetter
         end
 
         invoices
+    end
+
+    def create_invoice
+      Invoice.new(@params)
     end
 
     private
