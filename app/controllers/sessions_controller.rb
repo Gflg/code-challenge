@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-    before_action :redirect_if_authenticated, only: [:create, :new]
+  before_action :redirect_if_authenticated, only: [:create, :new]
 
   def create
     @user = User.find_by(confirmed_token: params[:user][:token])
