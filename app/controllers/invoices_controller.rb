@@ -1,18 +1,18 @@
 class InvoicesController < ApplicationController
-  before_action :set_invoice, only: %i[ show edit update destroy ]
+  before_action :set_invoice, only: %i[ show edit update ]
 
   # GET /invoices or /invoices.json
   def index
+    @invoices = Invoice.all
     if is_param_set(id)
-      @invoices = Invoice.where(id: id)
-    elsif is_param_set(start_date) && is_param_set(end_date)
-      @invoices = Invoice.where("created_at >= (?) AND created_at <= (?)", start_date, end_date)
+      @invoices = @invoices.where(id: id)
+    end
+    if is_param_set(start_date) && is_param_set(end_date)
+      @invoices = @invoices.where("created_at >= (?) AND created_at <= (?)", start_date, end_date)
     elsif is_param_set(start_date)
-      @invoices = Invoice.where("created_at >= (?)", start_date)
+      @invoices = @invoices.where("created_at >= (?)", start_date)
     elsif is_param_set(end_date)
-      @invoices = Invoice.where("created_at <= (?)", end_date)
-    else
-      @invoices = Invoice.all
+      @invoices = @invoices.where("created_at <= (?)", end_date)
     end
   end
 
@@ -26,23 +26,6 @@ class InvoicesController < ApplicationController
         send_data pdf.render, filename: "invoice_#{@invoice.id}.pdf",
                               type: "application/pdf",
                               disposition: "inline"
-      end
-    end
-  end
-
-  def edit_emails
-    @invoice = Invoice.find(id)
-  end
-
-  def save_emails
-    respond_to do |format|
-      if @invoice.update(invoice_params)
-        InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
-        format.html { redirect_to invoice_url(@invoice), notice: "Invoice emails were successfully updated." }
-        format.json { render :show, status: :ok, location: @invoice }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -63,7 +46,7 @@ class InvoicesController < ApplicationController
     respond_to do |format|
       if Invoice.find_by(id: @invoice.id).nil?
         if @invoice.save
-          InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
+          InvoiceMailer.with(invoice: @invoice).invoice_created.deliver_later
           format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
           format.json { render :show, status: :created, location: @invoice }
         else
@@ -82,23 +65,13 @@ class InvoicesController < ApplicationController
   def update
     respond_to do |format|
       if @invoice.update(invoice_params)
-        InvoiceMailer.with(invoice: @invoice).welcome_email.deliver_later
-        format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
+        InvoiceMailer.with(invoice: @invoice).invoice_created.deliver_later
+        format.html { redirect_to invoice_url(@invoice), notice: "Invoice emails were successfully updated." }
         format.json { render :show, status: :ok, location: @invoice }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @invoice.errors, status: :unprocessable_entity }
       end
-    end
-  end
-
-  # DELETE /invoices/1 or /invoices/1.json
-  def destroy
-    @invoice.destroy
-
-    respond_to do |format|
-      format.html { redirect_to invoices_url, notice: "Invoice was successfully destroyed." }
-      format.json { head :no_content }
     end
   end
 

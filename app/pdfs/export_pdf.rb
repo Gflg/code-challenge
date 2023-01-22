@@ -1,10 +1,14 @@
-class InvoicePdf < Prawn::Document
-    def call
-        draw_pdf
+class ExportPdf
+    include Prawn::View
+  
+    def initialize(invoice)
+        @invoice = invoice
+        content
     end
-
-    def draw_pdf
+  
+    def content
         pdf = Prawn::Document.new
+        pdf.text "aaaaaaaa"
         pdf.text "ID: #{@invoice.id}"
         pdf.move_down 10
         pdf.text "Creation date: #{@invoice.created_at.strftime('%d-%m-%Y')}"
@@ -17,14 +21,10 @@ class InvoicePdf < Prawn::Document
         pdf.move_down 10
         pdf.text "Emails"
         @invoice.emails.each do |email|
-            pdf.move_down 10
-            pdf.text "#{Prawn::Text::NBSP * 5}• #{email.address}"
+          pdf.move_down 10
+          pdf.text "#{Prawn::Text::NBSP * 5}• #{email.address}"
         end
 
         pdf
     end
-
-    def invoice
-        params[:invoice]
-    end
-end
+  end

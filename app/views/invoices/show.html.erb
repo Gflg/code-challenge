@@ -27,12 +27,9 @@
 </ul>
 
 <div>
-  <%= link_to "Edit this invoice", edit_invoice_path(@invoice) %> |
-  <%= link_to "Back to invoices", invoices_path %>
+  <%= link_to "Back to invoices", invoices_path %> |
   <%= link_to "Download PDF", invoice_path(@invoice, format: "pdf") %>
-  <%= link_to "Edit emails", edit_emails_path(@invoice) %>
-
-  <%= button_to "Destroy this invoice", @invoice, method: :delete %>
+  <% if !session[:current_user_id].nil? %>
+    | <%= link_to "Edit emails", edit_invoice_path(@invoice) %>
+  <% end %>
 </div>
-
-<%= session[:current_user_id] %>

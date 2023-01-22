@@ -1,7 +1,7 @@
 class InvoiceMailer < ApplicationMailer
     default from: 'code_challenge_invoices@test.com'
 
-    def welcome_email
+    def invoice_created
         @invoice = params[:invoice]
         @url  = 'http://example.com/login'
         attachments["invoice.pdf"] = generate_pdf_content

@@ -14,6 +14,9 @@
     <% if !session[:current_user_id].nil? %>
       Hi, <%= session[:current_user_email] %>!
       <%= button_to "Logout", logout_path, method: :delete %>
+    <% else %>
+      Hi, guest!
+      <%= link_to "Login", login_path %>
     <% end %>
 
     <%= yield %>
