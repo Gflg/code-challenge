@@ -11,6 +11,16 @@
   </head>
 
   <body>
+    <% if !session[:current_user_id].nil? %>
+      <%= button_to "Logout", logout_path, method: :delete %>
+    <% end %>
+
     <%= yield %>
   </body>
+
+  <footer>
+    <div>
+      Gustavo Ferreira, 2023
+    </div>
+  </footer>
 </html>

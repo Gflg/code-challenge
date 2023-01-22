@@ -33,7 +33,7 @@
 
   <div>
     <%= form.label :total_value, style: "display: block" %>
-    <%= form.text_field :total_value %>
+    <%= form.number_field :total_value, value: number_to_currency(form.object.total_value.to_f, delimiter: '', unit: ''), step: :any %>
   </div>
 
   <h4>Emails</h4>
