@@ -1,11 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  email: MyString
+  id: 1
+  email: email1@example.com
   confirmed_token: MyText
   is_active: true
 
 two:
-  email: MyString
-  confirmed_token: MyText2
-  is_active: true
+  id: 2
+  email: email2@example.com
+  token_to_be_confirmed: MyText2
+  is_active: false
