@@ -5,9 +5,11 @@ one:
   company: MyText
   debtor: MyText
   total_value: 9.99
+  created_at: 2022-02-11
 
 two:
   id: 2
   company: MyText
   debtor: MyText
   total_value: 9.99
+  created_at: 2023-01-10

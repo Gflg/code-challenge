@@ -3,22 +3,14 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    @invoices = Invoice.all
-    if is_param_set(id)
-      @invoices = @invoices.where(id: id)
-    end
-    if is_param_set(start_date) && is_param_set(end_date)
-      @invoices = @invoices.where("created_at >= (?) AND created_at <= (?)", start_date, end_date)
-    elsif is_param_set(start_date)
-      @invoices = @invoices.where("created_at >= (?)", start_date)
-    elsif is_param_set(end_date)
-      @invoices = @invoices.where("created_at <= (?)", end_date)
-    end
+    invoice_getter = InvoiceGetter.new(params)
+    @invoices = invoice_getter.filter_all_invoices
   end
 
   # GET /invoices/1 or /invoices/1.json
   def show
-    @invoice = Invoice.find(id)
+    invoice_getter = InvoiceGetter.new(params)
+    @invoice = invoice_getter.find_invoice_by_id
     respond_to do |format|
       format.html
       format.pdf do
@@ -42,9 +34,11 @@ class InvoicesController < ApplicationController
 
   # POST /invoices or /invoices.json
   def create
-    @invoice = Invoice.new(invoice_params)
+    invoice_creator = InvoiceCreator.new(invoice_params)
+    invoice_getter = InvoiceGetter.new(invoice_params)
+    @invoice = invoice_creator.create_invoice
     respond_to do |format|
-      if Invoice.find_by(id: @invoice.id).nil?
+      if invoice_getter.find_invoice_by_id.nil?
         if @invoice.save
           InvoiceMailer.with(invoice: @invoice).invoice_created.deliver_later
           format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
@@ -83,18 +77,6 @@ class InvoicesController < ApplicationController
 
     def id
       params[:id]
-    end
-
-    def start_date
-      params[:start_date]
-    end
-
-    def end_date
-      params[:end_date]
-    end
-
-    def is_param_set(param)
-      !param.nil? && param != ""
     end
 
     def create_pdf
