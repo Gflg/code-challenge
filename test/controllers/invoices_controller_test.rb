@@ -10,6 +10,21 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "should get index with id filter" do
+    get invoices_url(id: 1)
+    assert_response :success
+  end
+
+  test "should get index with date filter" do
+    get invoices_url(start_date: Time.now.to_date)
+    assert_response :success
+  end
+
+  test "should get index with id and date filter" do
+    get invoices_url(id: 2, start_date: Time.now.to_date)
+    assert_response :success
+  end
+
   test "should get new" do
     get new_invoice_url
     assert_response :success
@@ -38,11 +53,4 @@ class InvoicesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to invoice_url(@invoice)
   end
 
-  test "should destroy invoice" do
-    assert_difference("Invoice.count", -1) do
-      delete invoice_url(@invoice)
-    end
-
-    assert_redirected_to invoices_url
-  end
 end

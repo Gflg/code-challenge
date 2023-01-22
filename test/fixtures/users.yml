@@ -2,10 +2,10 @@
 
 one:
   email: MyString
-  token: MyText
-  is_active: false
+  confirmed_token: MyText
+  is_active: true
 
 two:
   email: MyString
-  token: MyText
-  is_active: false
+  confirmed_token: MyText
+  is_active: true
