@@ -12,6 +12,7 @@
 
   <body>
     <% if !session[:current_user_id].nil? %>
+      Hi, <%= session[:current_user_email] %>!
       <%= button_to "Logout", logout_path, method: :delete %>
     <% end %>
 
