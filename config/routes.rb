@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :users
+  resources :users, only: [:index, :show, :create]
   resources :invoices, except: :destroy
   
   get "/activate_token/:id" => "users#activate_token", as: 'activate_user_token'
