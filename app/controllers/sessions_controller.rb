@@ -1,3 +1,4 @@
+# This controller is used to control the session created based on a login.
 class SessionsController < ApplicationController
   before_action :redirect_if_authenticated, only: [:create, :new]
 

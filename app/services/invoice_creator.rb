@@ -1,3 +1,4 @@
+# This class is used to create invoices.
 class InvoiceCreator
     def initialize(params={})
         @params = params

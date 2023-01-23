@@ -1,3 +1,4 @@
+# This class is used to find users. It might be used to find all or specific users.
 class UserFinder
     def initialize(params={})
         @params = params

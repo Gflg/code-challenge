@@ -1,12 +1,12 @@
+# This class is used to send email about an invoice's data.
 class InvoiceMailer < ApplicationMailer
     default from: 'code_challenge_invoices@test.com'
 
     def invoice_created
         @invoice = params[:invoice]
-        @url  = 'http://example.com/login'
         attachments["invoice.pdf"] = generate_pdf_content
         all_emails = @invoice.emails.map {|mail| mail.address}
-        mail(to: all_emails, subject: 'Your invoice was created sucessfully')
+        mail(to: all_emails, subject: 'Informations about your invoice')
     end
 
     private

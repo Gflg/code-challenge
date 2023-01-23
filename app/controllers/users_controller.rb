@@ -2,20 +2,30 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show ]
 
   # GET /users or /users.json
+  # Used to show all users. I left this endpoint here to make tests easier to follow.
   def index
     @users = UserFinder.new.call
   end
 
   # GET /users/1 or /users/1.json
+  # Used to show a specific user. I left this endpoint here to make tests easier to follow.
   def show
   end
 
   # GET /users/new
+  # Used to load creation page
   def new
     @user = UserCreator.new.call
   end
 
   # POST /users or /users.json
+  # Used to save data from a new user
+  # It doesn't allow the creation of users with same email.
+  # If current email already exists, it returns the corresponding user.
+  # It also sends an email to the user's email address to validate the token and activate the user.
+
+  # If the user is already active, it keeps the current user active and the current token is the same.
+  # In this case, the token is changed when the user validate the new token received in its email.
   def create
     @user = UserCreator.new(user_params.merge(create_unique: true)).call
 
@@ -31,6 +41,8 @@ class UsersController < ApplicationController
     end
   end
 
+  # It is used to activate a token that needs to be confirmed.
+  # This function is responsible for processing the link sent to the user.
   def activate_token
     @user = UserTokenActivator.new(id: params[:id]).call
     respond_to do |format|

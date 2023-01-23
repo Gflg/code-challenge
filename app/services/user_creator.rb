@@ -1,3 +1,4 @@
+# This class is used to create users. Depending on the params, it might check for a unique user.
 class UserCreator
     def initialize(params={})
         @params = params

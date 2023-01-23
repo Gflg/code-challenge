@@ -2,11 +2,13 @@ class InvoicesController < ApplicationController
   before_action :set_invoice, only: %i[ show edit update ]
 
   # GET /invoices or /invoices.json
+  # Used to show all invoices created based on filters defined in params variable
   def index
     @invoices = InvoiceFinder.new(params.merge(filter_all_invoices: true)).call
   end
 
   # GET /invoices/1 or /invoices/1.json
+  # Used to show details from a specific invoice
   def show
     @invoice = InvoiceFinder.new(params).call
     respond_to do |format|
@@ -21,16 +23,21 @@ class InvoicesController < ApplicationController
   end
 
   # GET /invoices/new
+  # Used to load creation page
   def new
     @invoice = Invoice.new
     @emails = @invoice.emails.build
   end
 
   # GET /invoices/1/edit
+  # Used to load edition page
   def edit
   end
 
   # POST /invoices or /invoices.json
+  # Used to save data from a new invoice
+  # It doesn't allow the creation of invoices with the same ID of a previous one
+  # It also sends an email to all the emails linked to the current invoice
   def create
     @invoice = InvoiceCreator.new(invoice_params).call
     respond_to do |format|
@@ -52,6 +59,8 @@ class InvoicesController < ApplicationController
   end
 
   # PATCH/PUT /invoices/1 or /invoices/1.json
+  # Saves changes to a existing invoice
+  # It also sends an email to all the emails linked to the current invoice
   def update
     respond_to do |format|
       if @invoice.update(invoice_params)
