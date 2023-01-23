@@ -45,6 +45,8 @@ O projeto foi priorizado da seguinte forma, com o desenvolvimento seguindo a pri
 
 8. Refatorações de código e criação/ajuste de testes. Uma vez que as funcionalidades foram concluídas, adotei um processo de refatoração do código para deixá-lo melhor organizado junto com o ajuste e criação de testes. Para o código, a intenção foi remover códigos que continham "regras de negócio" e extrair essas "regras" para serviços, onde cada serviço seria responsável por fazer uma ação em específico. Para os testes, foram criados testes de integração para verificar se os endpoints possuem o comportamento esperado em alguns cenários e, além disso, testes unitários para criar cada um desses serviços criados.
 
+9. Adição de CSS e melhorias no front-end. Para finalizar o projeto, apliquei alguns estilos nas páginas para mudar a visualização de HTML puro.
+
 # Pontos de melhoria identificados
 
 1. Filtros de invoice poderiam ser feitos em Javascript. Para não prejudicar a entrega desse desafio, resolvi deixar os filtros feitos no back-end mesmo.
