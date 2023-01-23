@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
-  before_action :set_user_handler
   before_action :set_user, only: %i[ show ]
 
   # GET /users or /users.json
   def index
-    @users = @user_handler.find_all_users
+    @users = UserFinder.new.call
   end
 
   # GET /users/1 or /users/1.json
@@ -13,14 +12,12 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    user_handler = UserHandler.new
-    @user = user_handler.create_user
+    @user = UserCreator.new.call
   end
 
   # POST /users or /users.json
   def create
-    @user_handler = UserHandler.new(user_params)
-    @user = @user_handler.get_or_create_user
+    @user = UserCreator.new(user_params.merge(create_unique: true)).call
 
     respond_to do |format|
       if @user.save
@@ -35,8 +32,7 @@ class UsersController < ApplicationController
   end
 
   def activate_token
-    @user_handler = UserHandler.new(id: params[:id])
-    @user = @user_handler.activate_user_token
+    @user = UserTokenActivator.new(id: params[:id]).call
     respond_to do |format|
       if @user.save
         login @user
@@ -50,14 +46,9 @@ class UsersController < ApplicationController
   end
 
   private
-    def set_user_handler
-      @user_handler = UserHandler.new(params)
-    end
-
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user_handler = UserHandler.new(id: params[:id])
-      @user = @user_handler.find_user
+      @user = UserFinder.new(id: params[:id]).call
     end
 
     # Only allow a list of trusted parameters through.

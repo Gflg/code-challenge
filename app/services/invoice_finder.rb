@@ -1,16 +1,26 @@
-class InvoiceHandler
+class InvoiceFinder
     def initialize(params={})
         @invoice_id = params[:id]
         @start_date = params[:start_date]
         @end_date = params[:end_date]
-        @params = params
+        @filter_all_invoices = params[:filter_all_invoices]
     end
+
+    def call
+      if @filter_all_invoices
+        filter_invoices
+      else
+        find_invoice_by_id
+      end
+    end
+
+    private
 
     def find_invoice_by_id
         Invoice.find_by_id(@invoice_id)
     end
 
-    def filter_all_invoices
+    def filter_invoices
         invoices = Invoice.all
         if is_param_set(@invoice_id)
           invoices = invoices.where(id: @invoice_id)
@@ -25,12 +35,6 @@ class InvoiceHandler
 
         invoices
     end
-
-    def create_invoice
-      Invoice.new(@params)
-    end
-
-    private
 
     def is_param_set(param)
         !param.nil? && param != ""

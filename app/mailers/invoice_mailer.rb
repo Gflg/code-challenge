@@ -6,7 +6,7 @@ class InvoiceMailer < ApplicationMailer
         @url  = 'http://example.com/login'
         attachments["invoice.pdf"] = generate_pdf_content
         all_emails = @invoice.emails.map {|mail| mail.address}
-        mail(to: all_emails, subject: 'Welcome to My Awesome Site')
+        mail(to: all_emails, subject: 'Your invoice was created sucessfully')
     end
 
     private
