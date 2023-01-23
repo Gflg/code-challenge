@@ -1,17 +1,21 @@
-<h1>Login</h1>
+<div class="wrapper">
+    <div class="text-center mt-4 name">
+        Login
+    </div>
+    <br>
+    <%= form_with url: login_path, scope: :user do |form| %>
+      <% if flash.now[:alert] %>
+        <p style="color: red"><%= flash.now[:alert] %></p>
+      <% end %>
 
-<% if flash.now[:alert] %>
-  <p style="color: red"><%= flash.now[:alert] %></p>
-<% end %>
-
-<p style="color: green"><%= notice %></p>
-
-<br>
-
-<%= form_with url: login_path, scope: :user do |form| %>
-  <div>
-    <%= form.label :token %>
-    <%= form.text_field :token, required: true %>
-  </div>
-  <%= form.submit "Sign In" %>
-<% end %>
+      <p style="color: green"><%= notice %></p>
+      <div class="form-field d-flex align-items-center">
+        <%= form.label :token %>
+        <%= form.text_field :token, required: true %>
+      </div>
+      <%= form.submit "Sign In", class: "btn mt-3" %>
+    <% end %>
+    <div class="text-center fs-6">
+        <%= link_to "Sign up", sign_up_path %>
+    </div>
+</div>

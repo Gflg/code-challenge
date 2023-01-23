@@ -1,9 +1,10 @@
-<h1>New invoice</h1>
-
-<%= render "form", invoice: @invoice %>
-
-<br>
-
-<div>
-  <%= link_to "Back to invoices", invoices_path %>
+<div class="wrapper">
+  <div class="text-center mt-4 name">
+      New invoice
+  </div>
+  <br>
+  <%= render "form", invoice: @invoice %>
+  <div class="text-center fs-6">
+      <%= link_to "Back to invoices", invoices_path %>
+  </div>
 </div>

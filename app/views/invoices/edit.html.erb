@@ -1,38 +1,39 @@
-<h1>Editing invoice emails</h1>
+<div class="wrapper">
+  <div class="text-center mt-4 name">
+      Editing invoice emails
+  </div>
+  <br>
+  <%= form_with(model: @invoice) do |form| %>
+    <% if @invoice.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(@invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
 
-<%= form_with(model: @invoice) do |form| %>
-  <% if @invoice.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(@invoice.errors.count, "error") %> prohibited this invoice from being saved:</h2>
+        <ul>
+          <% @invoice.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-      <ul>
-        <% @invoice.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <h4>Emails</h4>
+    <div id="emails">
+      <%= form.fields_for :emails do |email| %>
+        <%= render "email_fields", f: email %>
+      <% end %>
+  
+      <div class="links">
+        <%= link_to_add_association "Add Email", form, :emails %>
+        <br><br>
+      </div>
+    </div>
+
+    <div>
+      <%= form.submit "Edit and send email", class: "btn mt-3" %>
     </div>
   <% end %>
-
-  <h4>Emails</h4>
-  <div id="emails">
-    <%= form.fields_for :emails do |email| %>
-      <%= render "email_fields", f: email %>
-    <% end %>
- 
-    <div class="links">
-      <%= link_to_add_association "Add Email", form, :emails %>
-      <br><br>
-    </div>
+  <div class="text-center fs-6">
+    <%= link_to "Show this invoice", @invoice %> |
+    <%= link_to "Back to invoices", invoices_path %>
   </div>
-
-  <div>
-    <%= form.submit "Edit and send email" %>
-  </div>
-<% end %>
-
-<br>
-
-<div>
-  <%= link_to "Show this invoice", @invoice %> |
-  <%= link_to "Back to invoices", invoices_path %>
 </div>

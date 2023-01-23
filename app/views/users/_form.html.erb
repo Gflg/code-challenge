@@ -11,12 +11,12 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="form-field d-flex align-items-center">
     <%= form.label :email, style: "display: block" %>
     <%= form.text_field :email %>
   </div>
 
   <div>
-    <%= form.submit "Generate token" %>
+    <%= form.submit "Generate token", class: "btn mt-3" %>
   </div>
 <% end %>

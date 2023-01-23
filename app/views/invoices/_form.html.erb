@@ -11,27 +11,27 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="form-field d-flex align-items-center">
     <%= form.label :id, style: "display: block" %>
     <%= form.number_field :id %>
   </div>
 
-  <div>
+  <div class="form-field d-flex align-items-center">
     <%= form.label :created_at, style: "display: block" %>
     <%= form.date_field :created_at %>
   </div>
 
-  <div>
+  <div class="form-field d-flex align-items-center">
     <%= form.label :company, style: "display: block" %>
     <%= form.text_area :company %>
   </div>
 
-  <div>
+  <div class="form-field d-flex align-items-center">
     <%= form.label :debtor, style: "display: block" %>
     <%= form.text_area :debtor %>
   </div>
 
-  <div>
+  <div class="form-field d-flex align-items-center">
     <%= form.label :total_value, style: "display: block" %>
     <%= form.number_field :total_value, value: number_to_currency(form.object.total_value.to_f, delimiter: '', unit: ''), step: :any %>
   </div>
@@ -49,6 +49,6 @@
   </div>
 
   <div>
-    <%= form.submit %>
+    <%= form.submit "Create Invoice", class: "btn mt-3" %>
   </div>
 <% end %>
