@@ -12,12 +12,16 @@
 
   <body>
     <% if !session[:current_user_id].nil? %>
-      Hi, <%= session[:current_user_email] %>!
-      <%= button_to "Logout", logout_path, method: :delete %>
+      <div style="display:flex;">
+        Hi, <%= session[:current_user_email] %>!
+        <%= button_to "Logout", logout_path, method: :delete, class: "btn-logout" %>
+      </div>
     <% else %>
-      Hi, guest!
-      <%= link_to "Login", login_path %> |
-      <%= link_to "Sign up", sign_up_path %>
+      <div style="display:flex;">
+        Hi, guest!
+        <%= button_to "Login", login_path, method: :get, class: "btn-logout" %>
+        <%= button_to "Sign up", sign_up_path, method: :get, class: "btn-logout" %>
+      </div>
     <% end %>
 
     <%= yield %>
