@@ -3,14 +3,12 @@ class InvoicesController < ApplicationController
 
   # GET /invoices or /invoices.json
   def index
-    invoice_handler = InvoiceHandler.new(params)
-    @invoices = invoice_handler.filter_all_invoices
+    @invoices = InvoiceFinder.new(params.merge(filter_all_invoices: true)).call
   end
 
   # GET /invoices/1 or /invoices/1.json
   def show
-    invoice_handler = InvoiceHandler.new(params)
-    @invoice = invoice_handler.find_invoice_by_id
+    @invoice = InvoiceFinder.new(params).call
     respond_to do |format|
       format.html
       format.pdf do
@@ -34,10 +32,9 @@ class InvoicesController < ApplicationController
 
   # POST /invoices or /invoices.json
   def create
-    invoice_handler = InvoiceHandler.new(invoice_params)
-    @invoice = invoice_handler.create_invoice
+    @invoice = InvoiceCreator.new(invoice_params).call
     respond_to do |format|
-      if invoice_handler.find_invoice_by_id.nil?
+      if InvoiceFinder.new({id: @invoice.id}).call.nil?
         if @invoice.save
           InvoiceMailer.with(invoice: @invoice).invoice_created.deliver_later
           format.html { redirect_to invoice_url(@invoice), notice: "Invoice was successfully created and mails were sent." }
