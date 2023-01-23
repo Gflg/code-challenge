@@ -44,3 +44,8 @@ O projeto foi priorizado da seguinte forma, com o desenvolvimento seguindo a pri
 7. Criação de autenticação para o usuário. Para que a autenticação fosse feita com sucesso, foram criados modelo, uma view e controller para Session. Session será responsável por buscar o token fornecido pelo usuário e, caso o encontre, fazer o login dele. Além disso, foi necessário criar outras classes auxiliares, como uma concern de Authentication, que disponiliza funções para o login/logout de usuários.
 
 8. Refatorações de código e criação/ajuste de testes. Uma vez que as funcionalidades foram concluídas, adotei um processo de refatoração do código para deixá-lo melhor organizado junto com o ajuste e criação de testes. Para o código, a intenção foi remover códigos que continham "regras de negócio" e extrair essas "regras" para serviços, onde cada serviço seria responsável por fazer uma ação em específico. Para os testes, foram criados testes de integração para verificar se os endpoints possuem o comportamento esperado em alguns cenários e, além disso, testes unitários para criar cada um desses serviços criados.
+
+# Pontos de melhoria identificados
+
+1. Filtros de invoice poderiam ser feitos em Javascript. Para não prejudicar a entrega desse desafio, resolvi deixar os filtros feitos no back-end mesmo.
+2. Funções de geração de PDF estão replicadas em algumas partes do código. Tentei criar uma classe onde essa geração pudesse ser centralizada mas tive problemas durante a renderização dos PDFs, renderizando arquivos vazios. Não entendi muito bem o que estava acontecendo e acabei deixando assim.
