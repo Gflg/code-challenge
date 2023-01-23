@@ -1,3 +1,4 @@
+# This class is used to activate a token sent by email.
 class UserTokenActivator
     def initialize(params={})
         @params = params

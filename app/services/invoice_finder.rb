@@ -1,3 +1,4 @@
+# This class is used to find invoices. It might have different filters.
 class InvoiceFinder
     def initialize(params={})
         @invoice_id = params[:id]
@@ -7,6 +8,7 @@ class InvoiceFinder
     end
 
     def call
+      # When this variable is set to true, it's a query for all invoices
       if @filter_all_invoices
         filter_invoices
       else
@@ -36,6 +38,7 @@ class InvoiceFinder
         invoices
     end
 
+    # This function validates if param variable has a valid value
     def is_param_set(param)
         !param.nil? && param != ""
     end

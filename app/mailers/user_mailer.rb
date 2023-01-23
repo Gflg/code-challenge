@@ -1,3 +1,4 @@
+# This class is used to send email about validating a created token to an user.
 class UserMailer < ApplicationMailer
     def activate_user_token
         @user = params[:user]
